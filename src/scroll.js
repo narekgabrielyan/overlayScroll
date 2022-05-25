@@ -13,6 +13,7 @@ class OverlayScroll {
         this.onWindowScroll();
     }
 
+    //TODO: avoid using window scroll
     onWindowScroll() {
         let oldScrollTop = 0;
         window.addEventListener('scroll', (e) => {
