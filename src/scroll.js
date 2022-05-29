@@ -1,18 +1,18 @@
 /**
- *  - - - OverlayScroll class - - -
- * @class
+ * OverlayScroll class
  * Includes all functionality which is used to create OverlayScroll component
+ * @class
  */
 class OverlayScroll {
     /**
-     * @constructor
-     * Takes the target container scrollable element and number of sections as an argument
+     * Takes a target container scrollable element and a number of sections as arguments
      * @param containerEl
      * @param sectionCount
      * @example
      * const exampleContainer = document.getElementById('example_container_element');
-     * const overlayScroll = new OverlayScroll(exampleContainer, 12);
-     * // creates an overlayScroll component in the element with an id 'example_container_element'
+     * const overlayScroll = new OverlayScroll(exampleContainer, 10);
+     * // creates an overlayScroll component with 10 scrollable sections in the element with an id 'example_container_element'
+     * @constructor
      */
     constructor(containerEl, sectionCount = 2) {
         this.containerEl = containerEl;
@@ -23,14 +23,25 @@ class OverlayScroll {
         }
     }
     /**
-     * @method onNextSection
      * Initializes an overlayScroll class and appends the overlayScroll component into given container element
+     * @method
      */
     init() {
         this.createUI();
     }
     /**
-     * @methods onNextSection and onPrevSection
+     * @method
+     */
+    onNextSection() {
+        const {currentSection, sectionCount} = this;
+        if (currentSection < sectionCount - 1) {
+            this.currentSection += 1;
+            this.onChangeSection();
+        }
+    }
+
+    /**
+     * Methods onNextSection and onPrevSection
      * Are used to scroll the overlayScroll bar to the next or the previous sections
      * @example
      * window.addEventListener('keydown', (e) => {
@@ -43,14 +54,8 @@ class OverlayScroll {
      * // listening for keydown event and changing to the next
      * // or the previous sections when the right
      * // or the left arrows are being pressed accordingly
+     * @method
      */
-    onNextSection() {
-        const {currentSection, sectionCount} = this;
-        if (currentSection < sectionCount - 1) {
-            this.currentSection += 1;
-            this.onChangeSection();
-        }
-    }
     onPrevSection() {
         const {currentSection} = this;
         if (currentSection > 0) {
@@ -60,8 +65,8 @@ class OverlayScroll {
     }
 
     /**
-     * @method onChangeSection
-     * Changes the scrollbar thus making the scroll changing animation
+     * Changes the scrollbar section thus triggering the scroll changing animation
+     * @method
      */
     onChangeSection() {
         const {track, decimals, units, currentSection} = this;
@@ -71,8 +76,8 @@ class OverlayScroll {
     }
 
     /**
-     * @method createUI
-     * Creates html and adds necessary styles
+     * Creates HTML elements and adds necessary CSS
+     * @method
      */
     createUI() {
         const {containerEl, sectionCount} = this;
@@ -105,8 +110,8 @@ class OverlayScroll {
         this.units = units;
     }
     /**
-     * @method destroy
      * Call this method whenever you want to remove the overlayScroll component
+     * @method
      */
     destroy() {
         const {wrapper} = this;
