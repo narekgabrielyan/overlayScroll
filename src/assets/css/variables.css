@@ -1,0 +1,5 @@
+:root {
+    --primaryColor: #000;
+    --secondaryColor: #ccc;
+    --transition-timing-function: cubic-bezier(.45,.21,.61,.88);
+}
