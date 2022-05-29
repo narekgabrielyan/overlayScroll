@@ -1,36 +1,21 @@
 class OverlayScroll {
-    constructor(containerEl, sectionCount) {
-        if (containerEl && sectionCount > 0) {
-            this.containerEl = containerEl;
-            this.sectionCount = sectionCount;
-            this.currentSection = 0;
+    constructor(containerEl, sectionCount = 2) {
+        this.containerEl = containerEl;
+        this.sectionCount = sectionCount;
+        this.currentSection = 0;
+        if (containerEl) {
             this.init();
         }
     }
 
     init() {
-        this.createHtml();
-        this.onWindowScroll();
+        this.createUI();
     }
 
-    //TODO: avoid using window scroll
-    onWindowScroll() {
-        let oldScrollTop = 0;
-        window.addEventListener('scroll', (e) => {
-            console.log(e)
-            let newScrollTop = document.documentElement.scrollTop;
-            if(newScrollTop > oldScrollTop) {
-                this.onNextSection();
-            } else {
-                this.onPrevSection();
-            }
-            oldScrollTop = newScrollTop <= 0 ? 0 : newScrollTop;
-        }, false);
-    }
 
     onNextSection() {
         const {currentSection, sectionCount} = this;
-        if(currentSection < sectionCount - 1) {
+        if (currentSection < sectionCount - 1) {
             this.currentSection += 1;
             this.onChangeSection();
         }
@@ -38,7 +23,7 @@ class OverlayScroll {
 
     onPrevSection() {
         const {currentSection} = this;
-        if(currentSection > 0) {
+        if (currentSection > 0) {
             this.currentSection -= 1;
             this.onChangeSection();
         }
@@ -51,10 +36,13 @@ class OverlayScroll {
         units.style.transform = `translateY(${currentSection * (-100)}%)`;
     }
 
-    createHtml() {
+    createUI() {
         const {containerEl, sectionCount} = this;
 
-        const wrapper = createEl('div', {className: 'wrapper--overlayScroll', style: {height: `${sectionCount * 36}px`}});
+        const wrapper = createEl('div', {
+            className: 'wrapper--overlayScroll',
+            style: {height: `${sectionCount * 36}px`}
+        });
         const track = createEl('div', {className: 'track--overlayScroll'});
         const decimals = createEl('div', {className: 'decimals--overlayScroll'})
         const units = createEl('div', {className: 'units--overlayScroll'})
@@ -73,8 +61,14 @@ class OverlayScroll {
         wrapper.append(track);
         containerEl.append(wrapper);
 
+        this.wrapper = wrapper;
         this.track = track;
         this.decimals = decimals;
         this.units = units;
+    }
+
+    destroy() {
+        const { wrapper } = this;
+        wrapper.remove();
     }
 }
